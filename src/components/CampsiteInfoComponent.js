@@ -1,6 +1,7 @@
 import React from "react";
-import { Card, CardImg, CardText, CardBody, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Card, CardImg, CardText, CardBody, Breadcrumb, BreadcrumbItem, Button, ButtonToggle, Modal } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Control } from "react-redux-form";
 
 function RenderCampsite({campsite}) {
         return (
@@ -17,14 +18,10 @@ function RenderCampsite({campsite}) {
 
 function RenderComments({comments}){
         if (comments){
-            console.log("comments are not null");
-            console.log(comments);
 
             return(
                 <div className="col-md-5 m-1">
                     <h4>Comments</h4>
-
-                    <ul>
                         {comments.map(comment => {
                             return (
                                 <div key={comment.id}>
@@ -34,8 +31,7 @@ function RenderComments({comments}){
                             );
     
                         })}
-
-                    </ul>
+                    <CommentForm/> 
                 
                 </div>
             );
@@ -69,6 +65,58 @@ function RenderComments({comments}){
         }
         return <div />;
     }
+
+    class CommentForm extends Component {
+        contructor(props) {
+            super(props);
+            this.state = {
+                isModalOpen: false
+            };
+
+            this.toggleModal = this.toggleModal.bind(this)
+            this.handleSubmit = this.handleSubmit.bind(this);
+        }
+
+    toggleModal() {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        });
+    }
+        handleSubmit(values){
+            console.log((values))
+                alert((values));
+                this.toggleModal();
+
+        }
+        render() {
+        return (
+            <React.Fragment>
+            <Button outline><i className="fa fa-pencil fa-lg"/>Submit Comment</Button>
+            <Modal>
+                <ModalHeader></ModalHeader>
+                <ModalBody>
+                    <ModalForm>
+                        <div className="form-group">
+                            <Control.select model=".rating" name="rating" className="form-control">
+                                <option></option>
+                                <option></option>
+                                <option></option>
+                                <option></option>
+                                <option></option>
+                            </Control.select>
+                        </div>
+                        <div className="form-group">
+                            <Label htmlFor="author" md={10}>Author</Label>
+                            <Control.text model=".author" id="author" name="author"></Control.text>
+                            place
+                        </div>
+                    </ModalForm>
+                </ModalBody>
+            </Modal>
+            </React.Fragment>
+          );
+        }
+      }
 
 
 export default CampsiteInfo;
